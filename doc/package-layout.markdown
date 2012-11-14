@@ -31,7 +31,7 @@ would look like:
 
     enchilada/
       pubspec.yaml
-      pubspec.lock *
+      pubspec.pinned *
       README.md
       LICENSE
       bin/
@@ -60,17 +60,17 @@ would look like:
         main.dart
         style.css
 
-\* The `pubspec.lock` will only be in source control if the package is an
+\* The `pubspec.pinned` will only be in source control if the package is an
 [application package](glossary.html#application-package).
 
 \** The `packages` directories will exist locally after you're run
-`pub install`, but won't be checked into source control.
+`pub fetch`, but won't be checked into source control.
 
 ## The basics
 
     enchilada/
       pubspec.yaml
-      pubspec.lock
+      pubspec.pinned
 
 <div class="learn-more">
   <a href="/doc/pubspec.html">
@@ -82,9 +82,9 @@ Every package will have a [**pubspec**](pubspec.html), a file named
 `pubspec.yaml`, in the root directory of the package. That's what *makes* it a
 package.
 
-Once you've run [`pub install`](pub-install.html) or [`pub
-update`](pub-update.html) on the package, you will also have a **lockfile**,
-named `pubspec.lock`. If your package is an [application
+Once you've run [`pub fetch`](pub-fetch.html) or [`pub
+upgrade`](pub-upgrade.html) on the package, you will also have a **pin file**,
+named `pubspec.pinned`. If your package is an [application
 package](glossary.html#application-package), this will be checked into source
 control. Otherwise, it won't be.
 

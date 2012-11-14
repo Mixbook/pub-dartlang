@@ -284,9 +284,10 @@ The ref can be anything that Git allows to [identify a commit][commit].
 If your package is an application, you don't usually need to specify [version
 constraints](glossary.html#version-constraint) for your dependencies. You will
 typically want to use the latest versions of the dependencies when you first
-create your app. Then you'll create and check in a lockfile that pins your
-dependencies to those specific versions. Specifying version constraints in your
-pubpsc then is usually redundant (though you can do it if you want).
+create your app. Then you'll create and check in a
+[pinned versions file](glossary.html#pin-file) that pins your dependencies to
+those specific versions. Specifying version constraints in your pubpsec then is
+usually redundant (though you can do it if you want).
 
 For a [library package](glossary.html#library-package) that you want users to
 reuse, though, it is important to specify version constraints. That lets people

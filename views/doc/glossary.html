@@ -6,10 +6,10 @@ themselves. They are usually meant to be run directly, either on the command
 line or in a browser. The opposite of an application package is a <a href="#library-package">library
 package</a>.</p>
 
-<p>Application packages should check their <a href="#lockfile">lockfiles</a> into source
-control, so that everyone working on the application and every location the
-application is deployed has a consistent set of dependencies. Because their
-dependencies are constrained by the lockfile, application packages usually
+<p>Application packages should check their <a href="#pin-file">pinned versions file</a> into
+source control, so that everyone working on the application and every location
+the application is deployed has a consistent set of dependencies. Because their
+dependencies are constrained by the pin file, application packages usually
 specify <code>any</code> for their dependencies&rsquo; <a href="#version-constraint">version
 constraints</a>.</p>
 
@@ -50,8 +50,8 @@ All other dependencies are <a href="#transitive-dependency">transitive dependenc
 themselves. They may also include scripts that will be run directly. The
 opposite of a library package is an <a href="#application-package">application package</a>.</p>
 
-<p>Library packages should not check their <a href="#lockfile">lockfile</a> into source
-control, since they should support a range of dependency versions. Their
+<p>Library packages should not check their <a href="#pin-file">pinned versions file</a> into
+source control, since they should support a range of dependency versions. Their
 <a href="#immediate-dependency">immediate dependencies</a>&rsquo; <a href="#version-constraints">version
 constraints</a> should be as wide as possible while still
 ensuring that the dependencies will be compatible with the versions that were
@@ -64,34 +64,33 @@ equal to the versions that were tested and less than the next major version. So
 if your library depended on the (fictional) <code>transmogrify</code> package and you
 tested it at version 1.2.1, your version constraint would be <code>"&gt;=1.2.1 &lt;2.0.0"</code>.</p>
 
-<h3 id="lockfile">Lockfile</h3>
+<h3 id="pin-file">Pin file</h3>
 
-<p>A file named <code>pubspec.lock</code> that specifies the concrete versions and other
-identifying information for every immediate and transitive dependency a package
-relies on.</p>
+<p>The &ldquo;pinned versions file&rdquo;, or &ldquo;pin file&rdquo; for short is a file named
+<code>pubspec.pinned</code> that specifies the concrete versions and other identifying
+information for every immediate and transitive dependency a package relies on.</p>
 
 <p>Unlike the pubspec, which only lists immediate dependencies and allows version
-ranges, the lock file comprehensively pins down the entire dependency graph to
-specific versions of packages. A lockfile ensures that you can recreate the
+ranges, the pin file comprehensively pins down the entire dependency graph to
+specific versions of packages. A pin file ensures that you can recreate the
 exact configuration of packages used by an application.</p>
 
-<p>The lockfile is generated automatically for you by pub when you run
-<a href="pub-install.html"><code>pub install</code></a> or <a href="pub-update.html"><code>pub update</code></a>. If your
+<p>The pin file is generated automatically for you by pub when you run
+<a href="pub-fetch.html"><code>pub fetch</code></a> or <a href="pub-upgrade.html"><code>pub upgrade</code></a>. If your
 package is an application package, you will typically check this into source
 control. For library packages, you usually won&rsquo;t.</p>
 
 <h3 id="source">Source</h3>
 
-<p>A kind of place that pub can download and install packages from. A source isn&rsquo;t
-a specific place like pub.dartlang.org or some specific Git URL. Each source
-describes a general procedure for accessing a package in some way. For example,
-&ldquo;git&rdquo; is one source. The git source knows how to download packages given a Git
-URL. There are a few different
-<a href="pubspec.html#dependency-sources">supported sources</a>.</p>
+<p>A kind of place that pub can fetch packages from. A source isn&rsquo;t a specific
+place like pub.dartlang.org or some specific Git URL. Each source describes a
+general procedure for accessing a package in some way. For example, &ldquo;git&rdquo; is
+one source. The git source knows how to download packages given a Git URL.
+There are a few different <a href="pubspec.html#dependency-sources">supported sources</a>.</p>
 
 <h3 id="system-cache">System cache</h3>
 
-<p>When pub installs a remote package, it downloads it into a single
+<p>When pub fetches a remote package, it downloads it into a single
 &ldquo;system cache&rdquo; directory maintained by pub. When it generates a &ldquo;packages&rdquo;
 directory for a package, that only contains symlinks to the real packages in
 the system cache. On Mac and Linux, this directory defaults to <code>~/.pub-cache</code>.
@@ -120,7 +119,7 @@ allowed.</p>
 <p><a href="#library-package">Library packages</a> should always specify version constraints
 for all of their dependencies, but <a href="#application-package">application packages</a>
 should usually allow any version of their dependencies, since they use the
-<a href="#lockfile">lockfile</a> to manage their dependency versions.</p>
+<a href="#pin-file">pin file</a> to manage their dependency versions.</p>
 
 <p>See also documentation on <a href="/doc/pubspec.html#version-constraints">version constraint
 formatting</a> and <a href="/doc/versioning.html">the philosophy behind

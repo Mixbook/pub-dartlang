@@ -9,7 +9,7 @@ title: "Pub's Versioning Philosophy"
 1. [Semantic versions](#semantic-versions)
 1. [Constraint solving](#constraint-solving)
 1. [Constraint context](#constraint-context)
-1. [Lockfiles](#lockfiles)
+1. [Pin files](#pin-files)
 1. [When things go wrong](#when-things-go-wrong)
 1. [Summary](#summary)
 {:.toc}
@@ -262,26 +262,26 @@ This is why each app gets its own "packages" directory: The concrete version
 selected for each package depends on the entire dependency graph of the
 containing app.
 
-## Lockfiles
+## Pin files
 
 So once pub has solved your app's version constraints, then what? The end
 result is a complete list of every package that your app depends on either
 directly or indirectly and the best version of that package that will work with
 your app's constraints.
 
-Pub takes that and writes it out to a **lockfile** in your app's directory
-called `pubspec.lock`. When pub builds the "packages" directory your app, it
-uses the lockfile to know what versions of each package to pull in. (And if
-you're curious to see what versions it selected, you can read the lockfile to
+Pub takes that and writes it out to a **pin file** in your app's directory
+called `pubspec.pinned`. When pub builds the "packages" directory your app, it
+uses the pin file to know what versions of each package to pull in. (And if
+you're curious to see what versions it selected, you can read the pin file to
 find out.)
 
-The next important thing pub does is it *stops touching the lockfile*. Once
-you've got a lockfile for your app, pub won't mess with it until you tell it to.
+The next important thing pub does is it *stops touching the pin file*. Once
+you've got a pin file for your app, pub won't mess with it until you tell it to.
 This is important. It means you won't spontanteously start using new versions
-of random packages in your app without intending to. Once your app is locked,
-it stays locked until you manually tell it to update the lockfile.
+of random packages in your app without intending to. Once your app is pinned,
+it stays pinned until you manually tell it to update the pin file.
 
-If your package is for an app, you take your lockfile *check that bad boy
+If your package is for an app, you take your pin file *check that bad boy
 into your source control system!* That way, everyone on your team will be using
 the exact same versions of every dependency when they hack on your app. You'll
 also use this when you deploy your app so you can ensure that your production
@@ -375,5 +375,5 @@ Wow, that's a lot to get through. Here's the important bits:
     your dependency graph and pick the best versions for you. If it can't, it
     tells you.
  *  Once your app has a solid set of versions for its dependencies, that gets
-    pinned down in a *lockfile*. That ensures that every machine your app is
+    nailed down in a *pin file*. That ensures that every machine your app is
     on is using the same versions of all of its dependencies.

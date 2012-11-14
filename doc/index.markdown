@@ -5,9 +5,9 @@ title: "Getting Started"
 1. [Installing and configuring pub](#installing-and-configuring-pub)
 1. [Creating a package](#creating-a-package)
 1. [Adding a dependency](#adding-a-dependency)
-1. [Installing dependencies](#installing-dependencies)
+1. [Fetching dependencies](#fetching-dependencies)
 1. [Importing code from a dependency](#importing-code-from-a-dependency)
-1. [Updating a dependency](#updating-a-dependency)
+1. [Upgrading dependencies](#upgrading-dependencies)
 {:.toc}
 
 *Pub* is a package mananger for Dart. It helps you reuse existing Dart code
@@ -108,20 +108,20 @@ dependencies:
 
 Here, we are declaring a dependency on the (fictional) `transmogrify` package.
 
-## Installing dependencies
+## Fetching dependencies
 
 <div class="learn-more">
-  <a href="/doc/pub-install.html">
-    Learn more about <tt>pub install</tt> &rarr;
+  <a href="/doc/pub-fetch.html">
+    Learn more about <tt>pub fetch</tt> &rarr;
   </a>
 </div>
 
-Once you've declared a dependency, you then tell pub to install it for you. If
-you're using the Editor, select "Pub Install" from the "Tools" menu. If you're
+Once you've declared a dependency, you then tell pub to fetch it for you. If
+you're using the Editor, select "Pub Fetch" from the "Tools" menu. If you're
 rocking the command line, do:
 
     $ cd path/to/your_app
-    $ pub install
+    $ pub fetch
 
 <aside class="alert alert-warning">
 Today, this command must be run from the directory containing
@@ -130,9 +130,9 @@ sub-directory of the package.
 </aside>
 
 When you do this, pub will create a `packages` directory in the same directory
-as `pubspec.yaml`. In there, it will download and install each package that
+as `pubspec.yaml`. In there, it will download and place each package that
 your package depends on (these are called your **immediate dependencies**). It
-will also look at all of those packages and install everything *they* depend
+will also look at all of those packages and fetch everything *they* depend
 on, recursively (these are your **transitive dependencies**).
 
 When this is done, you will have a `packages` directory that contains every
@@ -156,7 +156,7 @@ to see if it exposes anything different for you to import.
 <aside class="alert alert-info">
 This works by looking inside the generated <tt>packages</tt> directory. If you
 get an error, the directory may be out of date. Fix it by running
-<tt>pub install</tt> whenever you change your pubspec.
+<tt>pub fetch</tt> whenever you change your pubspec.
 </aside>
 
 You can also use this style to import libraries from within your own package.
@@ -196,20 +196,21 @@ importing file is.
 </div>
 -->
 
-## Updating a dependency
+## Upgrading dependencies
 
 <div class="learn-more">
-  <a href="/doc/pub-update.html">
-  Learn more about <tt>pub update</tt> &rarr;
+  <a href="/doc/pub-upgrade.html">
+  Learn more about <tt>pub upgrade</tt> &rarr;
   </a>
 </div>
 
-The first time you install a new dependency for your package, pub will download
+The first time you fetch a new dependency for your package, pub will download
 the latest version of it that's compatible with your other dependencies. It
-then locks your package to *always* use that version by creating a **lockfile**.
-This is a file named `pubspec.lock` that pub creates and stores next to your
-pubspec. It lists the specific versions of each dependency (immediate and
-transitive) that your package uses.
+then pins your package to *always* use that version by creating a
+[**pin file**](glossary.html#pin-file.html). This is a file named
+`pubspec.pinned` that pub creates and stores next to your pubspec. It lists the
+specific versions of each dependency (immediate and transitive) that your
+package uses.
 
 If this is an application package, you will check this file into source control.
 That way, everyone hacking on your app ensures they are using the same versions
@@ -218,13 +219,13 @@ when you deploy your app to production.
 
 When you are ready to upgrade your dependencies to the latest versions, do:
 
-    $ pub update
+    $ pub upgrade
 
-This tells pub to regenerate the lockfile using the newest available versions of
-your package's dependencies. If you only want to update a specific dependency,
+This tells pub to regenerate the pin file using the newest available versions of
+your package's dependencies. If you only want to upgrade a specific dependency,
 you can specify that too:
 
-    $ pub update transmogrify
+    $ pub upgrade transmogrify
 
-This updates `transmogrify` to the latest version but leave everything else
+This upgrades `transmogrify` to the latest version but leaves everything else
 the same.

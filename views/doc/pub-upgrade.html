@@ -1,0 +1,56 @@
+<pre><code>$ pub upgrade [PACKAGE]
+</code></pre>
+
+<p>Without any additional arguments, <code>pub upgrade</code> installs the latest versions of
+all the dependencies listed in the <a href="pubspec.html"><code>pubspec.yaml</code></a> file in the
+current working directory, as well as their <a href="glossary.html#transitive-dependencies">transitive
+dependencies</a>, to the <code>packages</code>
+directory located next to the pubspec. For example:</p>
+
+<pre><code>$ pub upgrade
+Dependencies upgraded!
+</code></pre>
+
+<p>When <code>pub upgrade</code> updates dependency versions, it writes a
+<a href="glossary.html#pin-file">pinned versions file</a> to ensure that future <a href="pub-fetch.html"><code>pub
+fetch</code>es</a> will use the same versions of those dependencies.
+Application packages should check in the pin file to source control; this
+ensures the application will use the exact same versions of all dependencies for
+all developers and when deployed to production. Library packages should not
+check in the pin file, though, since they&rsquo;re expected to work with a range of
+dependency versions.</p>
+
+<p>If a pin file already exists, <code>pub upgrade</code> will ignore it and generate a new
+one from scratch using the latest versions of all dependencies. This is the
+primary difference between <code>pub upgrade</code> and <code>pub fetch</code>, which always tries
+to install the dependency versions specified in the existing pin file.</p>
+
+<h2 id="updating-specific-dependencies">Updating specific dependencies</h2>
+
+<p>It&rsquo;s possible to tell <code>pub upgrade</code> to update specific dependencies to the
+latest version while leaving the rest of the dependencies alone as much as
+possible. For example:</p>
+
+<pre><code>$ pub upgrade unittest args
+Dependencies upgraded!
+</code></pre>
+
+<p>Upgrading a dependency upgrades its transitive dependencies to their latest
+versions as well. Usually, no other dependencies are upgraded; they stay at the
+versions that are pinned in the pin file. However, if the requested upgrades
+cause incompatibilities with these pinned versions, they will be selectively
+unpinned until a compatible set of versions is found.</p>
+
+<h2 id="adding-a-new-dependency">Adding a new dependency</h2>
+
+<p>If a dependency is added to the pubspec before <code>pub upgrade</code> is run, it will
+install the new dependency and any of its transitive dependencies to the
+<code>packages</code> directory. This is the same behavior as <code>pub fetch</code>.</p>
+
+<h2 id="removing-a-dependency">Removing a dependency</h2>
+
+<p>If a dependency is removed from the pubspec before <code>pub upgrade</code> is run, it
+will remove the dependency from the <code>packages</code> directory, thus making it
+unavailable for importing. Any transitive dependencies of the removed dependency
+will also be removed, as long as no remaining immediate dependencies also depend
+on them. This is the same behavior as <code>pub fetch</code>.</p>

@@ -10,10 +10,10 @@ themselves. They are usually meant to be run directly, either on the command
 line or in a browser. The opposite of an application package is a [library
 package](#library-package).
 
-Application packages should check their [lockfiles](#lockfile) into source
-control, so that everyone working on the application and every location the
-application is deployed has a consistent set of dependencies. Because their
-dependencies are constrained by the lockfile, application packages usually
+Application packages should check their [pinned versions file](#pin-file) into
+source control, so that everyone working on the application and every location
+the application is deployed has a consistent set of dependencies. Because their
+dependencies are constrained by the pin file, application packages usually
 specify `any` for their dependencies' [version
 constraints](#version-constraint).
 
@@ -54,8 +54,8 @@ A package that other packages will depend on. Library packages may have
 themselves. They may also include scripts that will be run directly. The
 opposite of a library package is an [application package](#application-package).
 
-Library packages should not check their [lockfile](#lockfile) into source
-control, since they should support a range of dependency versions. Their
+Library packages should not check their [pinned versions file](#pin-file) into
+source control, since they should support a range of dependency versions. Their
 [immediate dependencies](#immediate-dependency)' [version
 constraints](#version-constraints) should be as wide as possible while still
 ensuring that the dependencies will be compatible with the versions that were
@@ -68,34 +68,33 @@ equal to the versions that were tested and less than the next major version. So
 if your library depended on the (fictional) `transmogrify` package and you
 tested it at version 1.2.1, your version constraint would be `">=1.2.1 <2.0.0"`.
 
-### Lockfile
+### Pin file
 
-A file named `pubspec.lock` that specifies the concrete versions and other
-identifying information for every immediate and transitive dependency a package
-relies on.
+The "pinned versions file", or "pin file" for short is a file named
+`pubspec.pinned` that specifies the concrete versions and other identifying
+information for every immediate and transitive dependency a package relies on.
 
 Unlike the pubspec, which only lists immediate dependencies and allows version
-ranges, the lock file comprehensively pins down the entire dependency graph to
-specific versions of packages. A lockfile ensures that you can recreate the
+ranges, the pin file comprehensively pins down the entire dependency graph to
+specific versions of packages. A pin file ensures that you can recreate the
 exact configuration of packages used by an application.
 
-The lockfile is generated automatically for you by pub when you run
-[`pub install`](pub-install.html) or [`pub update`](pub-update.html). If your
+The pin file is generated automatically for you by pub when you run
+[`pub fetch`](pub-fetch.html) or [`pub upgrade`](pub-upgrade.html). If your
 package is an application package, you will typically check this into source
 control. For library packages, you usually won't.
 
 ### Source
 
-A kind of place that pub can download and install packages from. A source isn't
-a specific place like pub.dartlang.org or some specific Git URL. Each source
-describes a general procedure for accessing a package in some way. For example,
-"git" is one source. The git source knows how to download packages given a Git
-URL. There are a few different
-[supported sources](pubspec.html#dependency-sources).
+A kind of place that pub can fetch packages from. A source isn't a specific
+place like pub.dartlang.org or some specific Git URL. Each source describes a
+general procedure for accessing a package in some way. For example, "git" is
+one source. The git source knows how to download packages given a Git URL.
+There are a few different [supported sources](pubspec.html#dependency-sources).
 
 ### System cache
 
-When pub installs a remote package, it downloads it into a single
+When pub fetches a remote package, it downloads it into a single
 "system cache" directory maintained by pub. When it generates a "packages"
 directory for a package, that only contains symlinks to the real packages in
 the system cache. On Mac and Linux, this directory defaults to `~/.pub-cache`.
@@ -124,7 +123,7 @@ allowed.
 [Library packages](#library-package) should always specify version constraints
 for all of their dependencies, but [application packages](#application-package)
 should usually allow any version of their dependencies, since they use the
-[lockfile](#lockfile) to manage their dependency versions.
+[pin file](#pin-file) to manage their dependency versions.
 
 See also documentation on [version constraint
 formatting](/doc/pubspec.html#version-constraints) and [the philosophy behind
